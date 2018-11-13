@@ -4,9 +4,9 @@ export class InMemoryDataService implements InMemoryDbService {
     createDb(): {} {
         return {
             notes: [
-                new Note(0, "Заметка 1", Priority.Normal, new Date(2018, 11, 13)),
-                new Note(0, "Заметка 2", Priority.Low, new Date(2018, 11, 14)),
-                new Note(0, "Заметка 3", Priority.High, new Date(2018, 11, 16))
+                new Note(1, "Заметка 1", Priority.Normal, new Date(2018, 11, 13)),
+                new Note(2, "Заметка 2", Priority.Low, new Date(2018, 11, 14)),
+                new Note(3, "Заметка 3", Priority.High, new Date(2018, 11, 16))
             ]
         };
     }
@@ -34,7 +34,7 @@ export interface INote {
 }
 
 const enum Priority {
-    Low = 3,
-    Normal = 2,
-    High = 1
+    High = "Высокий",
+    Normal = "Нормальный",
+    Low = "Низкий",
 }
