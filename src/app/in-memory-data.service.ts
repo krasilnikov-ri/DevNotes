@@ -12,7 +12,7 @@ export class InMemoryDataService implements InMemoryDbService {
     }
 }
 
-class Note implements INote {
+export class Note implements INote {
     constructor(id: number, name: string, priority: Priority, executionDate: Date) {
         this.id = id;
         this.name = name;        
