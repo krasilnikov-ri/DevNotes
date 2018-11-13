@@ -1,4 +1,5 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
+import { Note, Priority } from './note.service';
 
 export class InMemoryDataService implements InMemoryDbService {
     createDb(): {} {
@@ -10,31 +11,4 @@ export class InMemoryDataService implements InMemoryDbService {
             ]
         };
     }
-}
-
-export class Note implements INote {
-    constructor(id: number, name: string, priority: Priority, executionDate: Date) {
-        this.id = id;
-        this.name = name;        
-        this.priority = priority;
-        this.executionDate = executionDate;
-    }
-
-    id: number;
-    name: string;    
-    priority: Priority;
-    executionDate: Date;
-}
-
-export interface INote {
-    id: number;
-    name: string;    
-    priority: Priority;
-    executionDate: Date;
-}
-
-const enum Priority {
-    High = "Высокий",
-    Normal = "Нормальный",
-    Low = "Низкий",
 }

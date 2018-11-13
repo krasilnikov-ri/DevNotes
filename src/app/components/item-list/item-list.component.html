@@ -1,29 +1,32 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="table-wrapper text-left">
+  <button mat-raised-button (click)="addNote()">Новая заметка</button>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-  <!-- Id Column -->
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> Идентификатор </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-  </ng-container>
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Заголовок </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
-
-  <!-- Priority Column -->
-  <ng-container matColumnDef="priority">
-    <th mat-header-cell *matHeaderCellDef> Приоритет </th>
-    <td mat-cell *matCellDef="let element"> {{element.priority}} </td>
-  </ng-container>
-
-  <!-- ExecutionDate Column -->
-  <ng-container matColumnDef="executionDate">
-    <th mat-header-cell *matHeaderCellDef> Дата выполнения </th>
-    <td mat-cell *matCellDef="let element"> {{element.executionDate}} </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Идентификатор </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Заголовок </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+  
+    <!-- Priority Column -->
+    <ng-container matColumnDef="priority">
+      <th mat-header-cell *matHeaderCellDef> Приоритет </th>
+      <td mat-cell *matCellDef="let element"> {{element.priority}} </td>
+    </ng-container>
+  
+    <!-- ExecutionDate Column -->
+    <ng-container matColumnDef="executionDate">
+      <th mat-header-cell *matHeaderCellDef> Дата выполнения </th>
+      <td mat-cell *matCellDef="let element"> {{element.executionDate}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

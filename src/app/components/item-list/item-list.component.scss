@@ -1,8 +1,10 @@
-table {
-    width: 50%;
+.table-wrapper {
     margin: 0 auto;
-    th {
-        text-align: center;
+    width: 50%;
+    table {
+        width: 100%;
+        th, td {
+            text-align: center;
+        }
     }
-}
-  
+}  
