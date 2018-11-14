@@ -1,27 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Note, NoteService } from 'src/app/services/note.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Note, NoteService, Priority } from '../../services/note.service';
 
 @Component({
   selector: 'item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss']
 })
-export class ItemComponent implements OnInit {
-
+export class ItemComponent {
   id: number;
   item: Note;
-  constructor(private activatedRoute: ActivatedRoute, private noteService: NoteService) {
-    this.id = parseInt(activatedRoute.snapshot.params['id']);
-  }
+  priorities: Array<string> = [];
 
-  ngOnInit() {
-    this.noteService.getNote(this.id).subscribe(response => {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private noteService: NoteService) {
+    for (let priority in Priority) {
+      this.priorities.push(Priority[priority]);      
+    }
+
+    this.id = +activatedRoute.snapshot.params['id'];
+
+    this.noteService.getNote(this.id).subscribe((response: Note) => {
       this.item = response;
-    });
+    });  
   }
 
-  focusout(event, id) {
-    this.noteService.saveContent(event.target.value, id);
+  submit(event) {
+    for (let i = 0; i < event.target.length; ++i) {
+      let controlName = event.target[i].name;
+      if (this.item.hasOwnProperty(controlName)) {
+        this.item[controlName] = event.target[i].value;
+      }
+    }
+    
+    this.noteService.saveNote(this.item);
+
+    return false;
   }
 }

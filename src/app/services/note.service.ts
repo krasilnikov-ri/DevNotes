@@ -22,9 +22,9 @@ export class NoteService {
         return of(note);
     }
 
-    saveContent(content: string, id: number) {
-        /*let note = this.notes.find(item => item.id === id);
-        note.content = content;*/
+    saveNote(item: Note) {
+        let note = this.notes.find(found => found.id === item.id);
+        note = item;
     }
 
     /*addNote() {
@@ -68,7 +68,7 @@ export interface INote {
     executionDate: Date;
 }
 
-export const enum Priority {
+export enum Priority {
     High = "Высокий",
     Normal = "Нормальный",
     Low = "Низкий",

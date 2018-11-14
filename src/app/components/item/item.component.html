@@ -1,6 +1,24 @@
-<div>
-  <p>Заголовок: {{item.name}}</p>
-  <p>Приоритет: {{item.priority}}</p>
-  <p>Дата выполнения: {{item.executionDate}}</p>
-  <p><textarea (focusout)="focusout($event, item.id)">{{item.content}}</textarea></p>
-</div>
+<form (submit)="submit($event)">
+  <span>Заголовок: </span>
+  <input type="text" name="name" [value]="item.name">
+  <hr>
+
+  <span>Приоритет: </span>
+  <select name="priority">
+    <option *ngFor="let priority of priorities" [selected]="priority === item.priority">{{priority}}</option>
+  </select>
+  <hr>
+
+  <span>Дата выполнения: </span>
+  <input type="date" name="executionDate" [value]="item.executionDate">
+  <hr>
+
+  <span>Содержимое: </span>
+  <p><textarea name="content">{{item.content}}</textarea></p>
+  <hr>
+
+  <button>Сохранить</button>
+  <br>
+
+  <a [routerLink]="['/notes']">Вернуться к списку заметок</a>
+</form>
