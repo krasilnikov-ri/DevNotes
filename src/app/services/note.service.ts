@@ -22,9 +22,22 @@ export class NoteService {
         return of(note);
     }
 
-    saveNote(item: Note) {
+    saveNote(item: Note): Observable<Note> {
         let note = this.notes.find(found => found.id === item.id);
         note = item;
+        return of(note);
+    }
+
+    addNote() {
+        let id = 0;
+        this.notes.forEach(item => {
+            if (item.id >= id) {
+                id = item.id + 1;
+            }
+        });
+        let blank = new Note(id, "", Priority.Normal, new Date());
+        this.notes.push(blank);
+        return of(blank);
     }
 
     /*addNote() {

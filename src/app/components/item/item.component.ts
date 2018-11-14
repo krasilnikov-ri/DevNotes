@@ -17,11 +17,23 @@ export class ItemComponent {
       this.priorities.push(Priority[priority]);      
     }
 
-    this.id = +activatedRoute.snapshot.params['id'];
+    let routeParam = activatedRoute.snapshot.params['id'];
+    if (routeParam !== "adding") {
+      routeParam = +routeParam;
+      this.id = !isNaN(routeParam) ? routeParam : undefined;
 
-    this.noteService.getNote(this.id).subscribe((response: Note) => {
-      this.item = response;
-    });  
+      if (this.id === undefined) {        
+        throw new Error("Заметки с id: {" + activatedRoute.snapshot.params['id'] + "} не существует!");
+      }
+
+      this.noteService.getNote(this.id).subscribe((response: Note) => {
+        this.item = response;
+      });  
+    } else {
+      this.noteService.addNote().subscribe((response: Note) => {
+        this.item = response;
+      });
+    }
   }
 
   submit(event) {
