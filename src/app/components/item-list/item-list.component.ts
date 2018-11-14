@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: 'item-list.component.html',
 })
 export class ItemListComponent {
-  displayedColumns: string[] = ['id', 'name', 'priority', 'executionDate'];
+  displayedColumns: string[] = ['id', 'name', 'priority', 'executionDate', 'actions'];
 
   dataSource: Note[];
 
@@ -24,5 +24,9 @@ export class ItemListComponent {
 
   addNote() {
     //this.noteService.addNote();
+  }
+
+  editNote() {
+
   }
 }

@@ -25,6 +25,14 @@
       <th mat-header-cell *matHeaderCellDef> Дата выполнения </th>
       <td mat-cell *matCellDef="let element"> {{element.executionDate}} </td>
     </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Действия </th>
+      <td mat-cell *matCellDef="let element">
+        <a [routerLink]="['../', 'note', element.id]">Редактировать</a>
+      </td>
+    </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

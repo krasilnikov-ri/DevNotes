@@ -1,0 +1,6 @@
+<div>
+  <p>Заголовок: {{item.name}}</p>
+  <p>Приоритет: {{item.priority}}</p>
+  <p>Дата выполнения: {{item.executionDate}}</p>
+  <p><textarea (focusout)="focusout($event, item.id)">{{item.content}}</textarea></p>
+</div>
