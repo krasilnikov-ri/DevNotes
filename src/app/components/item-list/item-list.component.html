@@ -43,5 +43,8 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <a mat-raised-button [routerLink]="['add']" id="add-note" class="float-right">Новая заметка</a>
+    <a mat-raised-button [routerLink]="['add']" id="add-note" class="float-right">
+        <i class="material-icons">add</i>
+        Новая заметка
+    </a>
 </div>
