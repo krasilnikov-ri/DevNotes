@@ -1,20 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Note, NoteService, Priority } from '../../services/note.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss']
 })
-export class ItemComponent implements OnInit {  
+export class ItemComponent implements OnInit, OnDestroy {   
   viewMode: string;
-  //id: number;
+  id: number;
   item: Note;
   priorities: Array<string> = [];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private noteService: NoteService) {
-    this.viewMode = this.activatedRoute.snapshot.url[1].path;
+  private routeSubscriptions: Subscription;
+
+  constructor(private activatedRoute: ActivatedRoute, private noteService: NoteService) {
+    this.routeSubscriptions = activatedRoute.params.subscribe(params => {
+      this.id = +params['id']; // parseInt(params['id'])
+    });
+
+    this.routeSubscriptions.add(
+      activatedRoute.url.subscribe(segments => {
+        this.viewMode = segments[1].path;
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -38,11 +49,9 @@ export class ItemComponent implements OnInit {
     }
   }
 
-  private initializeItem() {
-    let routeParamId = +this.activatedRoute.snapshot.params['id'];
-    
-    if (!isNaN(routeParamId)) {
-      this.noteService.getNote(routeParamId).subscribe((response: Note) => {
+  private initializeItem() {    
+    if (!isNaN(this.id)) {
+      this.noteService.getNote(this.id).subscribe((response: Note) => {
         this.item = response;
       });
     }
@@ -75,4 +84,9 @@ export class ItemComponent implements OnInit {
       this.priorities.push(Priority[priority]);
     }
   }
+
+  ngOnDestroy(): void {
+    this.routeSubscriptions.unsubscribe();
+    this.routeSubscriptions = null;
+  } 
 }
