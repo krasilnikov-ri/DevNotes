@@ -15,24 +15,44 @@ export class ItemListComponent implements OnDestroy {
   pageSize = 2;
   pageIndex = 0;
   totalCount: number;
+  private pageSizeKey = "paginatorPageSize";
+  private pageIndexKey = "paginatorPageIndex";
 
   private notesSubscriptions: Subscription;
 
   constructor(private noteService: NoteService) {
-    this.notesSubscriptions = this.noteService.getNotes(0, this.pageSize).subscribe(response => {
+    this.initPageSize(); // getting values from LocalStorage
+    this.initPageIndex(); // or setting by defaults
+    this.notesSubscriptions = this.noteService.getNotes(this.pageSize * this.pageIndex, this.pageSize).subscribe(response => {
       this.totalCount = response.totalCount;
       this.dataSource = response.data;
     });
   }
 
   changePage(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.pageIndex = event.pageIndex;
+    this.pageSize = localStorage[this.pageSizeKey] = event.pageSize;
+    this.pageIndex = localStorage[this.pageIndexKey] = event.pageIndex;
     this.notesSubscriptions.add(
       this.noteService.getNotes(this.pageSize * this.pageIndex, this.pageSize).subscribe(response => {
         this.dataSource = response.data;
       })
     );
+  }
+
+  private initPageSize() {
+    if (localStorage[this.pageSizeKey] !== undefined) {
+      this.pageSize = +localStorage[this.pageSizeKey];
+    } else {
+      localStorage[this.pageSizeKey] = this.pageSize.toString();
+    }
+  }
+
+  private initPageIndex() {
+    if (localStorage[this.pageIndexKey] !== undefined) {
+      this.pageIndex = +localStorage[this.pageIndexKey];
+    } else {
+      localStorage[this.pageIndexKey] = this.pageIndex.toString();
+    }
   }
 
   ngOnDestroy(): void {
