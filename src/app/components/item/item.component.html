@@ -1,77 +1,77 @@
 <form *ngIf="item; else notExist" (input)="formChanged = true" (submit)="submit($event)">
-  <div class="row">
-    <div class="col-lg-6 text-right"><span *ngIf="viewMode !== 'display'" class="text-danger">*</span>Заголовок</div>
-    <div class="col-lg-6 text-left">
-      <span *ngIf="viewMode === 'display'; else name">
-        {{item.name}}
-      </span>
-      <ng-template #name>
-        <input type="text" name="name" [value]="item.name" required>
-      </ng-template>
+    <div class="row">
+        <div class="col-lg-6 text-right"><span *ngIf="viewMode !== 'display'" class="text-danger">*</span>Заголовок</div>
+        <div class="col-lg-6 text-left">
+            <span *ngIf="viewMode === 'display'; else name">
+                {{item.name}}
+            </span>
+            <ng-template #name>
+                <input type="text" name="name" [value]="item.name" required>
+            </ng-template>
+        </div>
     </div>
-  </div>
-  <hr>
-
-  <div class="row">
-    <div class="col-lg-6 text-right">Приоритет</div>
-    <div class="col-lg-6 text-left">
-      <span *ngIf="viewMode === 'display'">
-        {{item.priority}}
-      </span>
-      <select *ngIf="viewMode !== 'display'" name="priority">
-        <option *ngFor="let priority of priorities; let index" [selected]="priority === item.priority">
-          {{index}}
-        </option>
-      </select>
-    </div>
-  </div>
-  <hr>
-
-  <div class="row">
-    <div class="col-lg-6 text-right">Дата выполнения</div>
-    <div class="col-lg-6 text-left">
-      <span *ngIf="viewMode === 'display'; else executionDate">
-        {{item.executionDate | date: 'dd.MM.yyyy'}}
-      </span>
-      <ng-template #executionDate>
-        <input type="date" name="executionDate" [value]="item.executionDate | date: 'yyyy-MM-dd'">
-      </ng-template>
-    </div>
-  </div>
-  <hr>
-
-  <div class="row">
-    <div class="col-lg-6 text-right"><span *ngIf="viewMode !== 'display'" class="text-danger">*</span>Содержимое</div>
-    <div class="col-lg-6 text-left">
-      <p *ngIf="viewMode === 'display'; else content">
-        {{item.content}}
-      </p>
-      <ng-template #content>
-        <textarea required *ngIf="viewMode !== 'display'" name="content">{{item.content}}</textarea>
-      </ng-template>
-    </div>
-  </div>
-
-  <ng-container *ngIf="viewMode !== 'display'">
     <hr>
-    <button *ngIf="formChanged; else noteFormMsg" mat-raised-button type="submit">
-      <i class="material-icons">save</i>
-      Сохранить заметку
-    </button>
-    <ng-template #noteFormMsg>
-      <i>
-        <ng-container *ngIf="viewMode === 'add'">
-          Заметка создана.
-        </ng-container>
-        Начните редактировать поля
-      </i>
-    </ng-template>
-  </ng-container>
+
+    <div class="row">
+        <div class="col-lg-6 text-right">Приоритет</div>
+        <div class="col-lg-6 text-left">
+            <span *ngIf="viewMode === 'display'">
+                {{item.priority}}
+            </span>
+            <select *ngIf="viewMode !== 'display'" name="priority">
+                <option *ngFor="let priority of priorities; let index" [selected]="priority === item.priority">
+                    {{index}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-6 text-right">Дата выполнения</div>
+        <div class="col-lg-6 text-left">
+            <span *ngIf="viewMode === 'display'; else executionDate">
+                {{item.executionDate | date: 'dd.MM.yyyy'}}
+            </span>
+            <ng-template #executionDate>
+                <input type="date" name="executionDate" [value]="item.executionDate | date: 'yyyy-MM-dd'">
+            </ng-template>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-6 text-right"><span *ngIf="viewMode !== 'display'" class="text-danger">*</span>Содержимое</div>
+        <div class="col-lg-6 text-left">
+            <p *ngIf="viewMode === 'display'; else content">
+                {{item.content}}
+            </p>
+            <ng-template #content>
+                <textarea required *ngIf="viewMode !== 'display'" name="content">{{item.content}}</textarea>
+            </ng-template>
+        </div>
+    </div>
+
+    <ng-container *ngIf="viewMode !== 'display'">
+        <hr>
+        <button *ngIf="formChanged; else noteFormMsg" mat-raised-button type="submit">
+            <i class="material-icons">save</i>
+            Сохранить заметку
+        </button>
+        <ng-template #noteFormMsg>
+            <i>
+                <ng-container *ngIf="viewMode === 'add'">
+                    Заметка создана.
+                </ng-container>
+                Начните редактировать поля
+            </i>
+        </ng-template>
+    </ng-container>
 </form>
 <ng-template #notExist>
-  <div class="text-danger">Заметки с id:{{id}} не существует!</div>
+    <div class="text-danger">Заметки с id:{{id}} не существует!</div>
 </ng-template>
 <a id="list-notes" mat-raised-button [routerLink]="['/notes']">
-  <i class="material-icons">list</i>
-  Вернуться к списку заметок
+    <i class="material-icons">list</i>
+    Вернуться к списку заметок
 </a>

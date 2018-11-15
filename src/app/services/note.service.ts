@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Headers } from '@angular/http';
 import { Observable, of } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class NoteService {
     private notes: Array<Note> = [
-        new Note(1, "Заметка 1", Priority.Normal, new Date(2018, 10, 13)),
-        new Note(2, "Заметка 2", Priority.Low, new Date(2018, 10, 14)),
-        new Note(3, "Заметка 3", Priority.High, new Date(2018, 10, 16))
+        new Note(1, 'Заметка 1', Priority.Normal, new Date(2018, 10, 13)),
+        new Note(2, 'Заметка 2', Priority.Low, new Date(2018, 10, 14)),
+        new Note(3, 'Заметка 3', Priority.High, new Date(2018, 10, 16))
     ];
 
     constructor() {}
@@ -18,9 +17,7 @@ export class NoteService {
     }
 
     getNotes(start: number, count: number): Observable<ListResponse> {
-        const data = start === undefined || count === undefined
-            ? this.notes
-            : this.notes.slice(start, start + count);
+        const data = start === undefined || count === undefined ? this.notes : this.notes.slice(start, start + count);
         return of(new ListResponse(data, this.notes.length));
     }
 
@@ -35,7 +32,7 @@ export class NoteService {
         if (note !== undefined) {
             note = item;
             saved = true;
-        }        
+        }
         return of(new ItemResponse(note, saved));
     }
 
@@ -46,10 +43,11 @@ export class NoteService {
                 id = item.id + 1;
             }
         });
-        const blank = new Note(id, "Новая заметка от " + new DatePipe("en-US").transform(new Date(), 'dd.MM.yyyy'), Priority.Normal, null);
+        const blank = new Note(id, 'Новая заметка от ' + new DatePipe('en-US').transform(new Date(), 'dd.MM.yyyy'), Priority.Normal, null);
         this.notes.push(blank);
         return of(blank);
-    } 
+    }
+}
 
 export class ItemResponse {
     data: Note;
@@ -73,7 +71,7 @@ export class Note implements INote {
     constructor(id: number, name: string, priority: Priority, executionDate: Date) {
         this.id = id;
         this.name = name;
-        this.content = "";
+        this.content = '';
         this.priority = priority;
         this.executionDate = executionDate;
     }
@@ -94,7 +92,7 @@ export interface INote {
 }
 
 export enum Priority {
-    High = "Высокий",
-    Normal = "Нормальный",
-    Low = "Низкий",
+    High = 'Высокий',
+    Normal = 'Нормальный',
+    Low = 'Низкий'
 }
