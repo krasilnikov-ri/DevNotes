@@ -28,7 +28,7 @@ export class NoteService {
         return of(note);
     }
 
-    addNote() {
+    addNote(): Observable<Note> {
         let id = 0;
         this.notes.forEach(item => {
             if (item.id >= id) {

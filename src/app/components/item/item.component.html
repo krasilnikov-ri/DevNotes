@@ -1,24 +1,48 @@
 <form (submit)="submit($event)">
   <span>Заголовок: </span>
-  <input type="text" name="name" [value]="item.name">
+  <span *ngIf="viewMode === 'display'; else name">
+      {{item.name}}
+  </span>
+  <ng-template #name>
+    <input type="text" name="name" [value]="item.name">
+  </ng-template>  
   <hr>
 
   <span>Приоритет: </span>
-  <select name="priority">
-    <option *ngFor="let priority of priorities" [selected]="priority === item.priority">{{priority}}</option>
+  <span *ngIf="viewMode === 'display'">
+    {{item.priority}}
+  </span>
+  <select *ngIf="viewMode !== 'display'" name="priority">
+    <option *ngFor="let priority of priorities; let index" [selected]="priority === item.priority">
+      {{index}}
+    </option>
   </select>
   <hr>
 
   <span>Дата выполнения: </span>
-  <input type="date" name="executionDate" [value]="item.executionDate">
+  <span *ngIf="viewMode === 'display'; else executionDate">
+    {{item.executionDate}}
+  </span>
+  <ng-template #executionDate>
+    <input type="date" name="executionDate" [value]="item.executionDate">
+  </ng-template>  
   <hr>
 
   <span>Содержимое: </span>
-  <p><textarea name="content">{{item.content}}</textarea></p>
+  <p>
+    <span *ngIf="viewMode === 'display'; else content">
+      {{item.content}}
+    </span>
+    <ng-template #content>
+      <textarea *ngIf="viewMode !== 'display'" name="content">{{item.content}}</textarea>
+    </ng-template>    
+  </p>
   <hr>
 
-  <button>Сохранить</button>
-  <br>
+  <ng-container *ngIf="viewMode !== 'display'">
+    <input type="submit" value="Сохранить">
+    <br>
+  </ng-container>
 
   <a [routerLink]="['/notes']">Вернуться к списку заметок</a>
 </form>

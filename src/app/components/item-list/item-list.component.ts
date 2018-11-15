@@ -17,16 +17,4 @@ export class ItemListComponent {
       this.dataSource = response;
     });
   }
-
-  ngOnInit(): void {
-
-  }
-
-  addNote() {
-    //this.noteService.addNote();
-  }
-
-  editNote() {
-
-  }
 }

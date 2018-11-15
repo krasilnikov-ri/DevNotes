@@ -7,33 +7,54 @@ import { Note, NoteService, Priority } from '../../services/note.service';
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss']
 })
-export class ItemComponent {
-  id: number;
+export class ItemComponent implements OnInit {  
+  viewMode: string;
+  //id: number;
   item: Note;
   priorities: Array<string> = [];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private noteService: NoteService) {
-    for (let priority in Priority) {
-      this.priorities.push(Priority[priority]);      
+    this.viewMode = this.activatedRoute.snapshot.url[1].path;
+  }
+
+  ngOnInit(): void {
+    switch (this.viewMode) {
+      case "add":
+        this.initializePriorities();
+        this.addItem();
+        break;
+
+      case "edit":
+        this.initializePriorities();
+        this.initializeItem();
+        break;
+
+      case "display":
+        this.initializeItem();
+        break;
+      
+      default:
+        break;
     }
+  }
 
-    let routeParam = activatedRoute.snapshot.params['id'];
-    if (routeParam !== "adding") {
-      routeParam = +routeParam;
-      this.id = !isNaN(routeParam) ? routeParam : undefined;
-
-      if (this.id === undefined) {        
-        throw new Error("Заметки с id: {" + activatedRoute.snapshot.params['id'] + "} не существует!");
-      }
-
-      this.noteService.getNote(this.id).subscribe((response: Note) => {
-        this.item = response;
-      });  
-    } else {
-      this.noteService.addNote().subscribe((response: Note) => {
+  private initializeItem() {
+    let routeParamId = +this.activatedRoute.snapshot.params['id'];
+    
+    if (!isNaN(routeParamId)) {
+      this.noteService.getNote(routeParamId).subscribe((response: Note) => {
         this.item = response;
       });
     }
+    else {
+      throw new Error("Заметки с id: {" + this.activatedRoute.snapshot.params['id'] + "} не существует!");      
+    } 
+  }
+
+  private addItem() {
+    this.noteService.addNote().subscribe((response: Note) => {
+      this.item = response;
+    });
   }
 
   submit(event) {
@@ -43,9 +64,15 @@ export class ItemComponent {
         this.item[controlName] = event.target[i].value;
       }
     }
-    
+
     this.noteService.saveNote(this.item);
 
     return false;
+  }
+
+  private initializePriorities() {
+    for (let priority in Priority) {
+      this.priorities.push(Priority[priority]);
+    }
   }
 }
