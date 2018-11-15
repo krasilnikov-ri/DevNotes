@@ -28,7 +28,7 @@
     <!-- ExecutionDate Column -->
     <ng-container matColumnDef="executionDate">
       <th mat-header-cell *matHeaderCellDef> Дата выполнения </th>
-      <td mat-cell *matCellDef="let element"> {{element.executionDate}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.executionDate | date: 'dd.MM.yyyy'}} </td>
     </ng-container>
 
     <!-- Actions Column -->
