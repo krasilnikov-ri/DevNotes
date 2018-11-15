@@ -51,7 +51,7 @@ export class ItemComponent implements OnInit, OnDestroy {
 
   private initializeItem() {    
     if (!isNaN(this.id)) {
-      this.noteService.getNote(this.id).subscribe((response: Note) => {
+      this.noteService.getNote(this.id).subscribe(response => {
         this.item = response;
       });
     }
@@ -61,7 +61,7 @@ export class ItemComponent implements OnInit, OnDestroy {
   }
 
   private addItem() {
-    this.noteService.addNote().subscribe((response: Note) => {
+    this.noteService.addNote().subscribe(response => {
       this.item = response;
     });
   }

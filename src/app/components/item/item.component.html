@@ -1,31 +1,43 @@
 <form (submit)="submit($event)">
-  <span>Заголовок: </span>
-  <span *ngIf="viewMode === 'display'; else name">
-      {{item.name}}
-  </span>
-  <ng-template #name>
-    <input type="text" name="name" [value]="item.name">
-  </ng-template>  
+  <div class="row">
+    <div class="col-lg-6 text-right">Заголовок</div>
+    <div class="col-lg-6 text-left">
+      <span *ngIf="viewMode === 'display'; else name">
+        {{item.name}}
+      </span>
+      <ng-template #name>
+        <input type="text" name="name" [value]="item.name">
+      </ng-template>
+    </div>
+  </div>
   <hr>
 
-  <span>Приоритет: </span>
-  <span *ngIf="viewMode === 'display'">
-    {{item.priority}}
-  </span>
-  <select *ngIf="viewMode !== 'display'" name="priority">
-    <option *ngFor="let priority of priorities; let index" [selected]="priority === item.priority">
-      {{index}}
-    </option>
-  </select>
+  <div class="row">
+    <div class="col-lg-6 text-right">Приоритет</div>
+    <div class="col-lg-6 text-left">
+      <span *ngIf="viewMode === 'display'">
+        {{item.priority}}
+      </span>
+      <select *ngIf="viewMode !== 'display'" name="priority">
+        <option *ngFor="let priority of priorities; let index" [selected]="priority === item.priority">
+          {{index}}
+        </option>
+      </select>
+    </div>
+  </div>
   <hr>
 
-  <span>Дата выполнения: </span>
-  <span *ngIf="viewMode === 'display'; else executionDate">
-    {{item.executionDate}}
-  </span>
-  <ng-template #executionDate>
-    <input type="date" name="executionDate" [value]="item.executionDate">
-  </ng-template>  
+  <div class="row">
+    <div class="col-lg-6 text-right">Дата выполнения</div>
+    <div class="col-lg-6 text-left">
+      <span *ngIf="viewMode === 'display'; else executionDate">
+        {{item.executionDate | date: 'dd.MM.yyyy'}}
+      </span>
+      <ng-template #executionDate>
+        <input type="date" name="executionDate" [value]="item.executionDate | date: 'yyyy-MM-dd'">
+      </ng-template>
+    </div>
+  </div>
   <hr>
 
   <span>Содержимое: </span>
@@ -35,14 +47,18 @@
     </span>
     <ng-template #content>
       <textarea *ngIf="viewMode !== 'display'" name="content">{{item.content}}</textarea>
-    </ng-template>    
+    </ng-template>
   </p>
-  <hr>
 
   <ng-container *ngIf="viewMode !== 'display'">
-    <input type="submit" value="Сохранить">
+    <hr>
+    <button mat-raised-button type="submit">
+      <i class="material-icons">save</i>
+    </button>
     <br>
   </ng-container>
-
-  <a [routerLink]="['/notes']">Вернуться к списку заметок</a>
 </form>
+<a id="list-notes" mat-raised-button [routerLink]="['/notes']">
+  <i class="material-icons">list</i>
+  Вернуться к списку заметок
+</a>
