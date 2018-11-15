@@ -1,6 +1,10 @@
-<div class="table-wrapper text-left">
-  <a mat-raised-button [routerLink]="['add']">Новая заметка</a>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="table-wrapper text-left">  
+  <mat-paginator [length]="totalCount"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="[2, 4, 5, 10]"
+              (page)="changePage($event)">
+  </mat-paginator>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">   
 
     <!-- Id Column -->
     <ng-container matColumnDef="id">
@@ -29,7 +33,7 @@
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Действия </th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element" class="actions">
         <a mat-raised-button [routerLink]="['edit', element.id]">Редактировать</a>
         <a mat-raised-button [routerLink]="['display', element.id]">
           <i class="material-icons">launch</i>
@@ -40,4 +44,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  <a mat-raised-button [routerLink]="['add']" id="add-note" class="float-right">Новая заметка</a>
 </div>

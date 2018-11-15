@@ -12,9 +12,15 @@ export class NoteService {
 
     constructor() {}
 
-    getNotes(): Observable<Note[]> {
-        return of(this.notes);
-        //return this.http.get("/api/notes");
+    getCount(): Observable<number> {
+        return of(this.notes.length);
+    }
+
+    getNotes(start: number, count: number): Observable<ListResponse> {
+        const data = start === undefined || count === undefined
+            ? this.notes
+            : this.notes.slice(start, start + count);
+        return of(new ListResponse(data, this.notes.length));
     }
 
     getNote(id: number): Observable<Note> {
@@ -35,7 +41,7 @@ export class NoteService {
                 id = item.id + 1;
             }
         });
-        let blank = new Note(id, "", Priority.Normal, new Date());
+        const blank = new Note(id, "Новая заметка", Priority.Normal, new Date());
         this.notes.push(blank);
         return of(blank);
     }
@@ -57,6 +63,15 @@ export class NoteService {
      */
 }
 
+export class ListResponse {
+    data: Note[];
+    totalCount: number;
+
+    constructor(data: Note[], totalCount: number) {
+        this.data = data;
+        this.totalCount = totalCount;
+    }
+}
 export class Note implements INote {
     constructor(id: number, name: string, priority: Priority, executionDate: Date) {
         this.id = id;
