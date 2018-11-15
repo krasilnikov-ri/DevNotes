@@ -9,6 +9,7 @@ const appRoutes: Routes = [
   { path: 'notes/edit/:id', component: ItemComponent },
   { path: 'notes/display/:id', component: ItemComponent },
   { path: '', redirectTo: 'notes', pathMatch: "full" },
+  { path: '**', redirectTo: 'notes'}
 ];
 
 @NgModule({

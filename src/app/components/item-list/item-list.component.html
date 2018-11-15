@@ -3,6 +3,7 @@
               [pageIndex]="pageIndex"
               [pageSize]="pageSize"
               [pageSizeOptions]="[2, 4, 5, 10]"
+              [showFirstLastButtons]="true"
               (page)="changePage($event)">
   </mat-paginator>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">   

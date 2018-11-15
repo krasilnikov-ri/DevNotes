@@ -13,8 +13,10 @@ export class ItemComponent implements OnInit, OnDestroy {
   id: number;
   item: Note;
   priorities: Array<string> = [];
+  formChanged = false;
 
-  private routeSubscriptions: Subscription;
+  private routeSubscriptions: Subscription = new Subscription();
+  private notesActionSubscriptions: Subscription = new Subscription();
 
   constructor(private activatedRoute: ActivatedRoute, private noteService: NoteService) {
     this.routeSubscriptions = activatedRoute.params.subscribe(params => {
@@ -74,7 +76,9 @@ export class ItemComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.noteService.saveNote(this.item);
+    this.notesActionSubscriptions = this.noteService.saveNote(this.item).subscribe(response => {
+      if (response.success) alert("Заметка успешно сохранена!");
+    });
 
     return false;
   }
@@ -88,5 +92,8 @@ export class ItemComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routeSubscriptions.unsubscribe();
     this.routeSubscriptions = null;
+
+    this.notesActionSubscriptions.unsubscribe();
+    this.notesActionSubscriptions = null;
   } 
 }

@@ -5,8 +5,6 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-//import { InMemoryDataService } from './services/in-memory-data.service';
 import { NoteService } from './services/note.service';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';

@@ -1,12 +1,12 @@
-<form (submit)="submit($event)">
+<form *ngIf="item; else notExist" (input)="formChanged = true" (submit)="submit($event)">
   <div class="row">
-    <div class="col-lg-6 text-right">Заголовок</div>
+    <div class="col-lg-6 text-right"><span *ngIf="viewMode !== 'display'" class="text-danger">*</span>Заголовок</div>
     <div class="col-lg-6 text-left">
       <span *ngIf="viewMode === 'display'; else name">
         {{item.name}}
       </span>
       <ng-template #name>
-        <input type="text" name="name" [value]="item.name">
+        <input type="text" name="name" [value]="item.name" required>
       </ng-template>
     </div>
   </div>
@@ -40,24 +40,37 @@
   </div>
   <hr>
 
-  <span>Содержимое: </span>
-  <p>
-    <span *ngIf="viewMode === 'display'; else content">
-      {{item.content}}
-    </span>
-    <ng-template #content>
-      <textarea *ngIf="viewMode !== 'display'" name="content">{{item.content}}</textarea>
-    </ng-template>
-  </p>
+  <div class="row">
+    <div class="col-lg-6 text-right"><span *ngIf="viewMode !== 'display'" class="text-danger">*</span>Содержимое</div>
+    <div class="col-lg-6 text-left">
+      <p *ngIf="viewMode === 'display'; else content">
+        {{item.content}}
+      </p>
+      <ng-template #content>
+        <textarea required *ngIf="viewMode !== 'display'" name="content">{{item.content}}</textarea>
+      </ng-template>
+    </div>
+  </div>
 
   <ng-container *ngIf="viewMode !== 'display'">
     <hr>
-    <button mat-raised-button type="submit">
+    <button *ngIf="formChanged; else noteFormMsg" mat-raised-button type="submit">
       <i class="material-icons">save</i>
+      Сохранить заметку
     </button>
-    <br>
+    <ng-template #noteFormMsg>
+      <i>
+        <ng-container *ngIf="viewMode === 'add'">
+          Заметка создана.
+        </ng-container>
+        Начните редактировать поля
+      </i>
+    </ng-template>
   </ng-container>
 </form>
+<ng-template #notExist>
+  <div class="text-danger">Заметки с id:{{id}} не существует!</div>
+</ng-template>
 <a id="list-notes" mat-raised-button [routerLink]="['/notes']">
   <i class="material-icons">list</i>
   Вернуться к списку заметок

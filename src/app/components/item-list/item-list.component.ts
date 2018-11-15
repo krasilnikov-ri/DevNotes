@@ -1,7 +1,7 @@
-import { Component, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { NoteService, Note, ListResponse } from '../../services/note.service';
+import { Component, OnDestroy } from '@angular/core';
+import { NoteService, Note } from '../../services/note.service';
 import { Subscription } from 'rxjs';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatPaginatorIntl } from '@angular/material';
 
 @Component({
   selector: 'item-list-component',
@@ -18,11 +18,18 @@ export class ItemListComponent implements OnDestroy {
   private pageSizeKey = "paginatorPageSize";
   private pageIndexKey = "paginatorPageIndex";
 
-  private notesSubscriptions: Subscription;
+  private notesSubscriptions: Subscription = new Subscription();
 
-  constructor(private noteService: NoteService) {
+  constructor(private noteService: NoteService, private matPaginatorIntl: MatPaginatorIntl) {
+    this.matPaginatorIntl.itemsPerPageLabel = 'Заметок на странице:';
+    this.matPaginatorIntl.firstPageLabel = 'Первая страница';
+    this.matPaginatorIntl.lastPageLabel = 'Последняя страница';
+    this.matPaginatorIntl.previousPageLabel = 'Предыдущая страница';
+    this.matPaginatorIntl.nextPageLabel = 'Следующая страница';
+
     this.initPageSize(); // getting values from LocalStorage
     this.initPageIndex(); // or setting by defaults
+    
     this.notesSubscriptions = this.noteService.getNotes(this.pageSize * this.pageIndex, this.pageSize).subscribe(response => {
       this.totalCount = response.totalCount;
       this.dataSource = response.data;

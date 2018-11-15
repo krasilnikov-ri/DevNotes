@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { Observable, of } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class NoteService {
@@ -28,10 +29,14 @@ export class NoteService {
         return of(note);
     }
 
-    saveNote(item: Note): Observable<Note> {
+    saveNote(item: Note): Observable<ItemResponse> {
         let note = this.notes.find(found => found.id === item.id);
-        note = item;
-        return of(note);
+        let saved = false;
+        if (note !== undefined) {
+            note = item;
+            saved = true;
+        }        
+        return of(new ItemResponse(note, saved));
     }
 
     addNote(): Observable<Note> {
@@ -41,28 +46,20 @@ export class NoteService {
                 id = item.id + 1;
             }
         });
-        const blank = new Note(id, "Новая заметка", Priority.Normal, new Date());
+        const blank = new Note(id, "Новая заметка от " + new DatePipe("en-US").transform(new Date(), 'dd.MM.yyyy'), Priority.Normal, null);
         this.notes.push(blank);
         return of(blank);
+    } 
+
+export class ItemResponse {
+    data: Note;
+    success: boolean;
+
+    constructor(data: Note, success: boolean = false) {
+        this.data = data;
+        this.success = success;
     }
-
-    /*addNote() {
-        let noteToAdd = new Note(666, "Тест", Priority.Normal, new Date());
-        let body = JSON.stringify({ noteToAdd });
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-
-        this.http.post("/api/notes", noteToAdd, options);
-    }*/
-
-    /**
-     Также сервис поддерживает поиск по полям объекта в памяти.
-     Для этого достаточно передать параметры в строке запроса,
-     например "/app/users/?name=lis",
-     чтобы найти объект со значением свойства name равное lis.
-     */
 }
-
 export class ListResponse {
     data: Note[];
     totalCount: number;
