@@ -47,6 +47,17 @@ export class NoteService {
         this.notes.push(blank);
         return of(blank);
     }
+
+    deleteNote(id: number): Observable<boolean> {
+        const prevCount = this.notes.length;
+        const itemIndexToDelete = this.notes.findIndex(item => {
+            return item.id === id;
+        });
+        if (itemIndexToDelete !== -1) {
+            this.notes.splice(itemIndexToDelete, 1);
+        }
+        return of(this.notes.length === prevCount - 1);
+    }
 }
 
 export class ItemResponse {

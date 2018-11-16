@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Note, NoteService, Priority } from '../../services/note.service';
 import { Subscription } from 'rxjs';
 
@@ -18,7 +18,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     private routeSubscriptions: Subscription = new Subscription();
     private notesActionSubscriptions: Subscription = new Subscription();
 
-    constructor(private activatedRoute: ActivatedRoute, private noteService: NoteService) {
+    constructor(private router: Router, private activatedRoute: ActivatedRoute, private noteService: NoteService) {
         this.routeSubscriptions = activatedRoute.params.subscribe(params => {
             this.id = +params['id']; // parseInt(params['id'])
         });
@@ -45,7 +45,9 @@ export class ItemComponent implements OnInit, OnDestroy {
             case 'display':
                 this.initializeItem();
                 break;
-
+            case 'delete':
+                this.deleteItem(this.id);
+                break;
             default:
                 break;
         }
@@ -53,9 +55,11 @@ export class ItemComponent implements OnInit, OnDestroy {
 
     private initializeItem() {
         if (!isNaN(this.id)) {
-            this.noteService.getNote(this.id).subscribe(response => {
-                this.item = response;
-            });
+            this.notesActionSubscriptions.add(
+                this.noteService.getNote(this.id).subscribe(response => {
+                    this.item = response;
+                })
+            );
         } else {
             throw new Error('Заметки с id: {' + this.activatedRoute.snapshot.params['id'] + '} не существует!');
         }
@@ -67,6 +71,19 @@ export class ItemComponent implements OnInit, OnDestroy {
         });
     }
 
+    private deleteItem(id: number) {
+        this.notesActionSubscriptions.add(
+            this.noteService.deleteNote(id).subscribe(deleted => {
+                if (deleted) {
+                    alert('Заметка успешно удалена!');
+                } else {
+                    alert('Не удалось удалить заметку с id:' + id);
+                }
+                this.router.navigate(['notes']);
+            })
+        );
+    }
+
     submit(event) {
         for (let i = 0; i < event.target.length; ++i) {
             const controlName = event.target[i].name;
@@ -75,9 +92,13 @@ export class ItemComponent implements OnInit, OnDestroy {
             }
         }
 
-        this.notesActionSubscriptions = this.noteService.saveNote(this.item).subscribe(response => {
-            if (response.success) { alert('Заметка успешно сохранена!'); }
-        });
+        this.notesActionSubscriptions.add(
+            this.noteService.saveNote(this.item).subscribe(response => {
+                if (response.success) {
+                    alert('Заметка успешно сохранена!');
+                }
+            })
+        );
 
         return false;
     }

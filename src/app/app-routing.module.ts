@@ -8,6 +8,7 @@ const appRoutes: Routes = [
     { path: 'notes/add', component: ItemComponent },
     { path: 'notes/edit/:id', component: ItemComponent },
     { path: 'notes/display/:id', component: ItemComponent },
+    { path: 'notes/delete/:id', component: ItemComponent },
     { path: '', redirectTo: 'notes', pathMatch: 'full' },
     { path: '**', redirectTo: 'notes' }
 ];
