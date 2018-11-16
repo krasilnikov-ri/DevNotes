@@ -30,10 +30,12 @@ export class ItemListComponent implements OnDestroy {
         this.initPageSize(); // getting values from LocalStorage
         this.initPageIndex(); // or setting by defaults
 
-        this.notesSubscriptions = this.noteService.getNotes(this.pageSize * this.pageIndex, this.pageSize).subscribe(response => {
-            this.totalCount = response.totalCount;
-            this.dataSource = response.data;
-        });
+        this.notesSubscriptions.add(
+            this.noteService.getNotes(this.pageSize * this.pageIndex, this.pageSize).subscribe(response => {
+                this.totalCount = response.totalCount;
+                this.dataSource = response.data;
+            })
+        );
     }
 
     changePage(event: PageEvent) {

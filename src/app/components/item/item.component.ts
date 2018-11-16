@@ -19,9 +19,11 @@ export class ItemComponent implements OnInit, OnDestroy {
     private notesActionSubscriptions: Subscription = new Subscription();
 
     constructor(private router: Router, private activatedRoute: ActivatedRoute, private noteService: NoteService) {
-        this.routeSubscriptions = activatedRoute.params.subscribe(params => {
-            this.id = +params['id']; // parseInt(params['id'])
-        });
+        this.routeSubscriptions.add(
+            activatedRoute.params.subscribe(params => {
+                this.id = +params['id']; // parseInt(params['id'])
+            })
+        );
 
         this.routeSubscriptions.add(
             activatedRoute.url.subscribe(segments => {
@@ -36,17 +38,16 @@ export class ItemComponent implements OnInit, OnDestroy {
                 this.initializePriorities();
                 this.addItem();
                 break;
-
             case 'edit':
                 this.initializePriorities();
                 this.initializeItem();
                 break;
-
             case 'display':
                 this.initializeItem();
                 break;
             case 'delete':
                 this.deleteItem(this.id);
+                this.router.navigate(['notes']);
                 break;
             default:
                 break;
@@ -79,7 +80,6 @@ export class ItemComponent implements OnInit, OnDestroy {
                 } else {
                     alert('Не удалось удалить заметку с id:' + id);
                 }
-                this.router.navigate(['notes']);
             })
         );
     }
